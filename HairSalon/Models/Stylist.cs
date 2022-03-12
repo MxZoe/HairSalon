@@ -8,9 +8,7 @@ namespace HairSalon.Models
     public string Name { get; set; }
     public string Description {get; set;}
     public int Id { get; }
-
     public List<Client> Clients { get; set; }
-
     public Stylist(string stylistName, string stylistDescription)
     {
       Name = stylistName;
@@ -30,7 +28,7 @@ namespace HairSalon.Models
       return _instances;
     }
 
-    public static Category Find(int searchId)
+    public static Stylist Find(int searchId)
     {
       return _instances[searchId-1];
     }
