@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using HairSalon.Models;
 
 namespace HairSalon
 {
@@ -14,19 +12,15 @@ namespace HairSalon
     {
       var builder = new ConfigurationBuilder()
           .SetBasePath(env.ContentRootPath)
-          .AddJsonFile("appsettings.json");
+          .AddEnvironmentVariables();
       Configuration = builder.Build();
     }
 
-    public IConfigurationRoot Configuration { get; set; }
+    public IConfigurationRoot Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
-
-      services.AddEntityFrameworkMySql()
-        .AddDbContext<HairSalonContext>(options => options
-        .UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
     }
 
     public void Configure(IApplicationBuilder app)
@@ -46,10 +40,10 @@ namespace HairSalon
         await context.Response.WriteAsync("Hello World!");
       });
     }
+  }
 
-    public static class DBConfiguration
-    {
-      public static string ConnectionString = "server=localhost;user id=root;password=epicodus;port=3306;database=zoe_weinstein;";
-    }
+  public static class DBConfiguration
+  {
+    public static string ConnectionString = "server=localhost;user id=root;password=epicodus;port=3306;database=zoe_weinstein;";
   }
 }
