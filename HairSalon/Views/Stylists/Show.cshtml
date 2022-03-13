@@ -1,0 +1,24 @@
+@{
+  Layout = "_Layout";
+}
+@using HairSalon.Models;
+
+<h1>Stylist Details: </h1>
+
+<h2>@Model["stylists"].Name</h2>
+<h3>Description: @Model["stylists"].Description</h3>
+<h3>Clients:</h3>
+@if (@Model["clients"].Count == 0)
+{
+  <h5>No orders have been added yet!</h5>
+} 
+<ol>
+@foreach (Client client in @Model["clients"])
+{
+  <li>@client.Name</li>
+}
+</ol>
+
+
+<a href='/stylists/@Model["stylists"].Id/clients/new'>Add new client</a>
+<a href='/stylists'>View all stylists</a>

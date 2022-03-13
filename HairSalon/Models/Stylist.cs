@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using HairSalon;
 
 namespace HairSalon.Models
 {
-  public class Views_Stylist_Show
+  public class Stylist
   {
     private static List<Stylist> _instances = new List<Stylist> {};
     public string Name { get; set; }
@@ -33,10 +34,12 @@ namespace HairSalon.Models
       return _instances[searchId-1];
     }
 
+
     public void AddClient(Client client)
     {
       Clients.Add(client);
     }
+    
 
   }
 }
