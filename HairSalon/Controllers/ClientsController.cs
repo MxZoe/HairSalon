@@ -1,26 +1,23 @@
-using System.Collections.Generic;
-using System;
 using Microsoft.AspNetCore.Mvc;
 using HairSalon.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HairSalon.Controllers
 {
-  public class ClientsController : Controller
+  public class ClientssController : Controller
   {
-    
-    [HttpGet("/stylists/{id}/clients/")]
+    private readonly HairSalonContext _db;
+
+    public ClientsController(HairSalonContext db)
+    {
+      _db = db;
+    }
+
     public ActionResult Index()
     {
-      List<Client> allClients = Client.GetAll();
-      return View(allClients);
+      List<Client> model = _db.Clients.ToList();
+      return View(model);
     }
-    
-
-    [HttpGet("/stylists/{id}/clients/new")]
-    public ActionResult New(int stylistID)
-    {
-      Stylist stylist = Stylist.Find(stylistID +1);
-      return View(stylist);
-    }    
   }
 }
