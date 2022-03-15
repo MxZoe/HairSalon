@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using HairSalon.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace HairSalon.Controllers
 {
@@ -16,12 +18,15 @@ namespace HairSalon.Controllers
 
     public ActionResult Index()
     {
-      List<Client> model = _db.Clients.ToList();
+      List<Client> model = _db.Clients.Include(client => client.Stylist).ToList();
+      ViewBag.PageTitle = "View All Clients";
       return View(model);
     }
 
     public ActionResult Create()
     {
+      ViewBag.ClientId = new SelectList(_db.Clients, "ClientId", "Name");
+
       return View();
     }
 
@@ -31,6 +36,42 @@ namespace HairSalon.Controllers
       _db.Clients.Add(client);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    public ActionResult Details(int id)
+    {
+      Client thisClient = _db.Clients.FirstOrDefault(client => client.ClientId == id);
+      return View(thisClient);
+    }
+
+    public ActionResult Edit(int id)
+    {
+        Client thisClient = _db.Clients.FirstOrDefault(client => client.ClientId == id);
+        ViewBag.ClientId = new SelectList(_db.Clients, "ClientId", "Name");
+        return View(thisClient);
+    }
+
+    [HttpPost]
+    public ActionResult Edit(Client client)
+    {
+        _db.Entry(client).State = EntityState.Modified;
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    public ActionResult Delete(int id)
+    {
+        var thisCLient = _db.Clients.FirstOrDefault(client => client.ClientId == id);
+        return View(thisItem);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+        var thisClient = _db.Clients.FirstOrDefault(client => client.ClientId == id);
+        _db.Items.Remove(thisClient);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
     }
   }
 }
