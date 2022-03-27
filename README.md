@@ -1,4 +1,4 @@
-# Bakery
+# Hair Salon
 
 #### By _**Zoe Weinstein**_
 
